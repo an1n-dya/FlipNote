@@ -55,7 +55,7 @@ class _DiaryPageState extends State<DiaryPage> {
       ),
       body: PageFlipWidget(
         key: _controller,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface, // Use theme color
         initialIndex: _initialPage,
         children: [
           for (int i = 0; i < widget.diary.entries.length; i++) _buildPage(i),
@@ -69,9 +69,9 @@ class _DiaryPageState extends State<DiaryPage> {
     final formattedDate = DateFormat.yMMMMd().format(date);
 
     return CustomPaint(
-      painter: RuledPaperPainter(),
+      painter: RuledPaperPainter(context), // Pass context to painter
       child: Container(
-        color: const Color(0x00E3F2FD), // Transparent to show custom painter
+        color: Colors.transparent, // Transparent to show custom painter
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,10 +120,14 @@ class _DiaryPageState extends State<DiaryPage> {
 }
 
 class RuledPaperPainter extends CustomPainter {
+  final BuildContext context;
+
+  RuledPaperPainter(this.context);
+
   @override
   void paint(Canvas canvas, Size size) {
     final Paint linePaint = Paint()
-      ..color = Colors.blue.withAlpha(77)
+      ..color = Theme.of(context).colorScheme.primary.withAlpha(77) // Use theme color
       ..strokeWidth = 1.0;
 
     // Draw horizontal lines
@@ -133,7 +137,7 @@ class RuledPaperPainter extends CustomPainter {
 
     // Draw vertical margin line
     final Paint marginPaint = Paint()
-      ..color = Colors.red.withAlpha(127)
+      ..color = Theme.of(context).colorScheme.secondary.withAlpha(127) // Use theme color
       ..strokeWidth = 1.0;
     canvas.drawLine(Offset(40, 0), Offset(40, size.height), marginPaint);
   }

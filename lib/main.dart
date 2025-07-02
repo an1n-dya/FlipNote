@@ -27,6 +27,23 @@ void main() async {
   runApp(MyApp(diaryRepository: diaryRepository));
 }
 
+// Define a custom MaterialColor for a soft blue
+MaterialColor softBlue = const MaterialColor(
+  0xFFB3E5FC, // Primary color value (light blue)
+  <int, Color>{
+    50: Color(0xFFE1F5FE),
+    100: Color(0xFFB3E5FC),
+    200: Color(0xFF81D4FA),
+    300: Color(0xFF4FC3F7),
+    400: Color(0xFF29B6F6),
+    500: Color(0xFF03A9F4),
+    600: Color(0xFF039BE5),
+    700: Color(0xFF0288D1),
+    800: Color(0xFF0277BD),
+    900: Color(0xFF01579B),
+  },
+);
+
 class MyApp extends StatelessWidget {
   final DiaryRepository diaryRepository;
 
@@ -40,8 +57,21 @@ class MyApp extends StatelessWidget {
         title: 'FlipNote',
         debugShowCheckedModeBanner: false, // Remove debug banner
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: softBlue,
+          colorScheme: ColorScheme.light(
+            primary: softBlue,
+            secondary: Colors.amber.shade300,
+            surface: Colors.grey.shade100,
+            onPrimary: Colors.white,
+            onSecondary: Colors.black87,
+            onSurface: Colors.black87,
+          ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          appBarTheme: AppBarTheme(
+            backgroundColor: softBlue[100],
+            foregroundColor: Colors.black87,
+            elevation: 0,
+          ),
         ),
         home: const HomePage(),
       ),
