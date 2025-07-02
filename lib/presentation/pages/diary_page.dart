@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +19,7 @@ class DiaryPage extends StatefulWidget {
 class _DiaryPageState extends State<DiaryPage> {
   late final _controller = GlobalKey<PageFlipWidgetState>();
   late final List<TextEditingController> _textControllers;
+  late int _initialPage;
 
   @override
   void initState() {
@@ -27,6 +27,16 @@ class _DiaryPageState extends State<DiaryPage> {
     _textControllers = widget.diary.entries
         .map((entry) => TextEditingController(text: entry))
         .toList();
+
+    final now = DateTime.now();
+    final startOfYear = DateTime(widget.diary.year, 1, 1);
+    _initialPage = now.difference(startOfYear).inDays;
+
+    // Ensure initial page is within bounds
+    if (_initialPage < 0) _initialPage = 0;
+    if (_initialPage >= widget.diary.entries.length) {
+      _initialPage = widget.diary.entries.length - 1;
+    }
   }
 
   @override
@@ -46,6 +56,7 @@ class _DiaryPageState extends State<DiaryPage> {
       body: PageFlipWidget(
         key: _controller,
         backgroundColor: Colors.white,
+        initialIndex: _initialPage,
         children: [
           for (int i = 0; i < widget.diary.entries.length; i++) _buildPage(i),
         ],
@@ -112,7 +123,7 @@ class RuledPaperPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint linePaint = Paint()
-      ..color = Colors.blue.withOpacity(0.3)
+      ..color = Colors.blue.withAlpha(77)
       ..strokeWidth = 1.0;
 
     // Draw horizontal lines
@@ -122,7 +133,7 @@ class RuledPaperPainter extends CustomPainter {
 
     // Draw vertical margin line
     final Paint marginPaint = Paint()
-      ..color = Colors.red.withOpacity(0.5)
+      ..color = Colors.red.withAlpha(127)
       ..strokeWidth = 1.0;
     canvas.drawLine(Offset(40, 0), Offset(40, size.height), marginPaint);
   }

@@ -18,6 +18,12 @@ void main() async {
   final diaryProvider = DiaryProvider(diaryBox);
   final diaryRepository = DiaryRepository(diaryProvider);
 
+  final currentYear = DateTime.now().year;
+  final currentYearDiary = await diaryRepository.getDiary(currentYear);
+  if (currentYearDiary == null) {
+    await diaryRepository.createDiary(currentYear);
+  }
+
   runApp(MyApp(diaryRepository: diaryRepository));
 }
 
@@ -32,6 +38,7 @@ class MyApp extends StatelessWidget {
       create: (context) => DiaryBloc(diaryRepository)..add(LoadDiaries()),
       child: MaterialApp(
         title: 'FlipNote',
+        debugShowCheckedModeBanner: false, // Remove debug banner
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,

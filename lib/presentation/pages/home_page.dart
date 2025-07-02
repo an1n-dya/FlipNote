@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,10 +31,6 @@ class HomePage extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDiaryDialog(context),
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -60,37 +55,6 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  void _showAddDiaryDialog(BuildContext context) {
-    final yearController = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Create New Diary'),
-        content: TextField(
-          controller: yearController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'Year'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              final year = int.tryParse(yearController.text);
-              if (year != null) {
-                context.read<DiaryBloc>().add(CreateDiary(year));
-                Navigator.pop(context);
-              }
-            },
-            child: const Text('Create'),
-          ),
-        ],
-      ),
     );
   }
 }
